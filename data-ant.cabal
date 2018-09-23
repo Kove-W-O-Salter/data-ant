@@ -3,7 +3,7 @@ version:             0.1.0.0
 -- synopsis:
 -- description:
 homepage:            https://github.com/Kove-W-O-Salter/data-ant#readme
-license:             BSD3
+license:             MIT
 license-file:        LICENSE
 author:              Kove W. Ochre-Salter
 maintainer:          kove.w.o.salter@gmail.com
