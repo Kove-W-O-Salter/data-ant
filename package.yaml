@@ -1,0 +1,28 @@
+name: data-ant
+version: 0.1.0.0
+github: "Kove-W-O-Salter/data-ant"
+license: MIT
+author: "Kove W. Ochre-Salter"
+maintainer: "kove.w.o.salter@gmail.com"
+copyright: "Kove W. Ochre-Salter"
+synopsis: String interpolation in Haskell.
+category: Data
+description: Please see the README on GitHub at <https://github.com/Kove-W-O-Salter/data-ant#readme>
+
+
+extra-source-files:
+- README.md
+
+dependencies:
+- base >= 4.7 && < 5
+- parsec >= 3.1.13.0
+- template-haskell >= 2.13.0.0
+- haskell-src-meta >= 0.8.0.3
+
+library:
+  source-dirs: src
+
+tests:
+  spec:
+    main: Spec.lhs
+    source-dirs: test
