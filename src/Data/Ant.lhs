@@ -1,4 +1,6 @@
 > {-# LANGUAGE LambdaCase #-}
+> {-# LANGUAGE TemplateHaskell #-}
+> {-# LANGUAGE QuasiQuotes #-}
 
 > module Data.Ant
 >   ( aq
@@ -24,9 +26,10 @@
 >   case parseAnt source of
 >     Left message -> error message
 >     Right ast ->
->       return $ AppE (VarE $ mkName "concat") (ListE $ eNodes ast)
->   where
->     eNodes ast =
->       map (\case
->         ChrN str -> LitE $ StringL [str]
->         ExpN exp -> AppE (VarE $ mkName "show") exp) (astNodes ast)
+>       return $ AppE (VarE 'concat)
+>                     (ListE $ eNodes)
+>       where
+>         eNodes =
+>           map (\case
+>             ChrN str -> LitE $ StringL [str]
+>             ExpN exp -> AppE (VarE 'show) exp) (astNodes ast)

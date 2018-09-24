@@ -27,8 +27,12 @@
 > esc :: Parser Node
 > esc =
 >   do char '\\'
->      c <- choice [char '$', char '\\']
->      return $ ChrN c
+>      c <- lookAhead $ anyChar
+>      if c == '$' then
+>        do anyChar
+>           return $ ChrN c
+>      else
+>        return $ ChrN '\\'
 
 > expN :: Parser Node
 > expN =
@@ -37,11 +41,24 @@
 >      return $ ExpN exp
 
 > chrN :: Parser Node
-> chrN = pure ChrN <*> noneOf "\\$"
+> chrN = pure ChrN
+>     <*> noneOf "\\$"
 
 > expNVar :: Parser Exp
-> expNVar =  pure (VarE . mkName)
->        <*> hsId
+> expNVar = choice [hsVar, hsCon]
+>   where
+>     hsVar = hsId VarE lower
+>     hsCon = hsId ConE upper 
+>     hsId node initial =
+>       do x <- initial <|> char '_'
+>          xs <- idBody
+>          return $ node $ mkName (x:xs)
+>     idBody = many $ choice
+>       [ letter
+>       , char '_'
+>       , digit
+>       , char '\''
+>       ]
 
 > expNExp :: Parser Exp
 > expNExp =
@@ -50,22 +67,3 @@
 >      case parseExp raw of
 >        Left message -> error message
 >        Right exp -> return exp
-
-> hsId :: Parser String
-> hsId =
->   do x <- idHead
->      xs <- idBody
->      return (x:xs)
->   where
->     idHead = choice
->       [ letter
->       , char '_'
->       ]
->     idBody = many $ choice
->       [ letter
->       , char '_'
->       , digit
->       , char '\''
->       ]
-
->
