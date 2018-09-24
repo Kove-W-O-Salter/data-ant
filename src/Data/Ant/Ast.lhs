@@ -10,6 +10,6 @@
 > data Ast = MkAst { astNodes :: [Node] }
 >          deriving Show
 
-> data Node = StrN { nodeStr :: String }
+> data Node = ChrN { nodeChr :: Char }
 >           | ExpN { nodeExp :: Exp }
 >           deriving Show

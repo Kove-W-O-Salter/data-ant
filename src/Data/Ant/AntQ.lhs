@@ -6,7 +6,7 @@
 >   )
 >   where
 
-> import Prelude hiding error
+> import Prelude hiding (error)
 > import Data.Ant.Error
 > import Language.Haskell.TH
 > import Language.Haskell.TH.Quote

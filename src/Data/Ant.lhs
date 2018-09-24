@@ -1,3 +1,4 @@
+> {-# LANGUAGE LambdaCase #-}
 
 > module Data.Ant
 >   ( aq
@@ -5,7 +6,7 @@
 >   )
 >   where
 
-> import Prelude hiding error
+> import Prelude hiding (error)
 > import Data.Ant.Ast
 > import Data.Ant.AntQ
 > import Data.Ant.Error
@@ -23,7 +24,9 @@
 >   case parseAnt source of
 >     Left message -> error message
 >     Right ast ->
->       AppE "concat" eNodes
+>       return $ AppE (VarE $ mkName "concat") (ListE $ eNodes ast)
 >   where
->     eNodes =
->       ListE $ map (LitE . StringL) (astNodes ast)
+>     eNodes ast =
+>       map (\case
+>         ChrN str -> LitE $ StringL [str]
+>         ExpN exp -> AppE (VarE $ mkName "show") exp) (astNodes ast)

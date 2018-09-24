@@ -1,16 +1,17 @@
 
 > module Data.Ant.Parser (parseAnt) where
 
-> import Prelude hiding error
+> import Prelude hiding (error)
 > import Data.Ant.Ast
 > import Data.Ant.Error
-> import Lanuage.Haskell.Meta
+> import Language.Haskell.TH
+> import Language.Haskell.Meta
 > import Text.ParserCombinators.Parsec
 
 > parseAnt :: String -> Either String Ast
 > parseAnt source =
 >   case parse ant "(unknown)" source of
->     Left message -> Left $ show error
+>     Left message -> Left $ show message
 >     Right ast -> Right ast
 
 > ant :: Parser Ast
@@ -21,28 +22,31 @@
 > nodes = many node
 
 > node :: Parser Node
-> node =  choice [esc, expN, strN]
+> node = choice [esc, expN, chrN]
 
 > esc :: Parser Node
 > esc =
->   do string "\\$"
->      return $ StrN "$"
+>   do char '\\'
+>      c <- choice [char '$', char '\\']
+>      return $ ChrN c
 
 > expN :: Parser Node
 > expN =
 >   do string "$"
 >      exp <- (try expNVar <|> expNExp)
 >      return $ ExpN exp
->
+
+> chrN :: Parser Node
+> chrN = pure ChrN <*> noneOf "\\$"
+
 > expNVar :: Parser Exp
 > expNVar =  pure (VarE . mkName)
 >        <*> hsId
 
 > expNExp :: Parser Exp
 > expNExp =
->   do raw <- between (string "{|")
->                     (string "|}")
->                     (some anyChar)
+>   do string "{|"
+>      raw <- manyTill anyChar (string "|}")
 >      case parseExp raw of
 >        Left message -> error message
 >        Right exp -> return exp
@@ -57,7 +61,7 @@
 >       [ letter
 >       , char '_'
 >       ]
->     idBody = choice
+>     idBody = many $ choice
 >       [ letter
 >       , char '_'
 >       , digit
