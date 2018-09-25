@@ -17,3 +17,6 @@
 >
 >      it "Should support escaping '$' with '\\'" $
 >        [aq|x is \$x|] `shouldBe` "x is $x"
+>
+>      it "Should support escaping '\\' with '\\\\'" $
+>        [aq|\\back\\slash\\|] `shouldBe` "\\back\\slash\\"
