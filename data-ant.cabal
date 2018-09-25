@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1b9d3ef08a5d29d523b4811e4c7a47a01fd290b2695384f390349bd1b8820cd3
+-- hash: 327cf11ed5848be913ad27e9ac8916febcceaf0f86684291cd9824ad1377ab7a
 
 name:           data-ant
 version:        0.1.0.0
@@ -51,8 +51,11 @@ test-suite spec
   hs-source-dirs:
       test
   build-depends:
-      base >=4.7 && <5
+      QuickCheck
+    , base >=4.7 && <5
+    , data-ant ==0.1.0.0
     , haskell-src-meta >=0.8.0.3
+    , hspec
     , parsec >=3.1.13.0
     , template-haskell >=2.13.0.0
   default-language: Haskell2010
