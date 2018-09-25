@@ -9,8 +9,11 @@
 > main =
 >  hspec $
 >    describe "Data.Ant.aq" $ do
->      it "Should interpolate an data that is an instance of 'Show'" $ do
+>      it "Should interpolate a variable that is an instance of 'Show'" $
 >        property $ \x -> [aq|x is $x|] == "x is " ++ show (x :: String)
 >
->      it "Should support escaping '$' with '\\'" $ do
+>      it "Should interpolate a value that is an instance of 'Show'" $
+>        property $ \x -> [aq|x is ${|x|}|] == "x is " ++ show (x :: String)
+>
+>      it "Should support escaping '$' with '\\'" $
 >        [aq|x is \$x|] `shouldBe` "x is $x"
