@@ -27,12 +27,8 @@
 > esc :: Parser Node
 > esc =
 >   do char '\\'
->      c <- lookAhead $ anyChar
->      if c == '$' then
->        do anyChar
->           return $ ChrN c
->      else
->        return $ ChrN '\\'
+>      c <- oneOf "\\$"
+>      return $ ChrN c
 
 > expN :: Parser Node
 > expN =
