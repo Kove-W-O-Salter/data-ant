@@ -6,6 +6,7 @@
 > import Test.Hspec
 > import Test.QuickCheck
 
+> main :: IO ()
 > main =
 >  hspec $
 >    describe "Data.Ant.aq" $ do
