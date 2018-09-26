@@ -1,4 +1,6 @@
 
+> {-# LANGUAGE MultiWayIf #-}
+
 > module Data.Ant.Parser (parseAnt) where
 
 > import Prelude hiding (error)
@@ -58,8 +60,25 @@
 
 > expNExp :: Parser Exp
 > expNExp =
->   do string "{|"
->      raw <- manyTill anyChar (string "|}")
+>   do char '{'
+>      raw <- closed 0
 >      case parseExp raw of
 >        Left message -> error message
->        Right exp -> return exp
+>        Right exp -> return exp      
+>   where
+>     closed :: Int -> Parser String
+>     closed nesting =
+>       do c <- anyChar
+>          if c == '}' && nesting == 0 then
+>            return []
+>          else if c == '\\' then
+>            do c' <- oneOf "\\{}" <?> "escape character"
+>               cs <- closed nesting
+>               return (c':cs)
+>          else
+>            do cs <- closed $
+>                 case c of
+>                   '{' -> nesting + 1
+>                   '}' -> nesting - 1
+>                   _ -> nesting
+>               return (c:cs)
