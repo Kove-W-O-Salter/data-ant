@@ -1,6 +1,4 @@
 
-> {-# LANGUAGE MultiWayIf #-}
-
 > module Data.Ant.Parser (parseAnt) where
 
 > import Prelude hiding (error)
