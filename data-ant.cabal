@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 327cf11ed5848be913ad27e9ac8916febcceaf0f86684291cd9824ad1377ab7a
+-- hash: ba3b4d892a3f8b44349c743293c59fd898af304084ab27830f1ae1403363adc4
 
 name:           data-ant
 version:        0.1.0.0
@@ -32,10 +32,12 @@ library
       Data.Ant.Ast
       Data.Ant.Error
       Data.Ant.Parser
+      Data.Ant.Render
   other-modules:
       Paths_data_ant
   hs-source-dirs:
       src
+  ghc-options: -fenable-rewrite-rules
   build-depends:
       base >=4.7 && <5
     , haskell-src-meta >=0.8.0.3
@@ -50,6 +52,7 @@ test-suite spec
       Paths_data_ant
   hs-source-dirs:
       test
+  ghc-options: -fenable-rewrite-rules
   build-depends:
       QuickCheck
     , base >=4.7 && <5

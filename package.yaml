@@ -22,6 +22,9 @@ dependencies:
 library:
   source-dirs: src
 
+ghc-options:
+- -fenable-rewrite-rules
+  
 tests:
   spec:
     main: Spec.lhs

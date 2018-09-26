@@ -13,6 +13,7 @@
 > import Data.Ant.AntQ
 > import Data.Ant.Error
 > import Data.Ant.Parser
+> import Data.Ant.Render
 > import Language.Haskell.TH
 
 > aq :: AntQ
@@ -32,4 +33,4 @@
 >         eNodes =
 >           map (\case
 >             ChrN str -> LitE $ StringL [str]
->             ExpN exp -> AppE (VarE 'show) exp) (astNodes ast)
+>             ExpN exp -> AppE (VarE 'render) exp) (astNodes ast)
