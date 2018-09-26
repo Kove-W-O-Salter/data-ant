@@ -22,13 +22,13 @@
 > nodes = many node
 
 > node :: Parser Node
-> node = choice [esc, expN, chrN]
+> node = choice [esc, expN, strN]
 
 > esc :: Parser Node
 > esc =
 >   do char '\\'
 >      c <- oneOf "\\$"
->      return $ ChrN c
+>      return $ StrN [c]
 
 > expN :: Parser Node
 > expN =
@@ -36,9 +36,12 @@
 >      exp <- (try expNVar <|> expNExp)
 >      return $ ExpN exp
 
-> chrN :: Parser Node
-> chrN = pure ChrN
->     <*> noneOf "\\$"
+> strN :: Parser Node
+> strN =
+>   do str <- many1 strChar
+>      return $ StrN str
+>   where
+>     strChar = noneOf "\\$"
 
 > expNVar :: Parser Exp
 > expNVar = choice [hsVar, hsCon]

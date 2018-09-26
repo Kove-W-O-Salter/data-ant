@@ -32,5 +32,5 @@
 >       where
 >         eNodes =
 >           map (\case
->             ChrN str -> LitE $ StringL [str]
+>             StrN str -> LitE $ StringL str
 >             ExpN exp -> AppE (VarE 'render) exp) (astNodes ast)
