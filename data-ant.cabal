@@ -2,10 +2,10 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ba3b4d892a3f8b44349c743293c59fd898af304084ab27830f1ae1403363adc4
+-- hash: 75f4d9d40997f91b1e64e4977bb6c4311e9fd633a5c419dfa326eabbbbdcf1f1
 
 name:           data-ant
-version:        0.1.0.0
+version:        0.1.0.1
 synopsis:       String interpolation in Haskell.
 description:    Please see the README on GitHub at <https://github.com/Kove-W-O-Salter/data-ant#readme>
 category:       Data
@@ -56,7 +56,7 @@ test-suite spec
   build-depends:
       QuickCheck
     , base >=4.7 && <5
-    , data-ant ==0.1.0.0
+    , data-ant ==0.1.0.1
     , haskell-src-meta >=0.8.0.3
     , hspec
     , parsec >=3.1.13.0
