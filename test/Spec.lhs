@@ -9,14 +9,23 @@
 > main =
 >  hspec $
 >    describe "Data.Ant.aq" $ do
->      it "Should interpolate a variable that is an instance of 'Show'" $
->        property $ \x -> [aq|x is $x|] == "x is " ++ show (x :: String)
+>      it "Should interpolate any serialisable variable" $
+>        property $ \x -> [aq|x == $x|] == "x == " ++ show (x :: Char)
 >
->      it "Should interpolate a value that is an instance of 'Show'" $
->        property $ \x -> [aq|x is ${|x|}|] == "x is " ++ show (x :: String)
+>      it "Should insert Strings" $
+>        property $ \name -> [aq|Hi, my name is $name|] == "Hi, my name is " ++ name
 >
->      it "Should support escaping '$' with '\\'" $
->        [aq|x is \$x|] `shouldBe` "x is $x"
+>      it "Should interpolate any serialisable expression" $
+>        property $ \name age -> [aq|${(name,age)}|] == show (name :: String, age :: Int)
 >
->      it "Should support escaping '\\' with '\\\\'" $
->        [aq|\\back\\slash\\|] `shouldBe` "\\back\\slash\\"
+>      it "Should support interpolation escaping" $
+>        [aq|\$string|] `shouldBe` "$string"
+>
+>      it "Should support escape escaping" $
+>        [aq|\\|] `shouldBe` "\\"
+>
+>      it "Should support escaped braces in interpolation blocks" $
+>        [aq|${"\{\}"}|] `shouldBe` "{}"
+>
+>      it "Should support escaped escapes in interpolation blocks" $
+>        [aq|${(\\x -> x) "Hello"}|] `shouldBe` "Hello"
