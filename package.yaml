@@ -1,5 +1,5 @@
 name: data-ant
-version: 0.1.0.1
+version: 0.1.1.0
 github: "Kove-W-O-Salter/data-ant"
 license: MIT
 author: "Kove W. Ochre-Salter"
@@ -30,6 +30,6 @@ tests:
     main: Spec.lhs
     source-dirs: test
     dependencies:
-    - data-ant == 0.1.0.1
+    - data-ant == 0.1.1.0
     - hspec
     - QuickCheck
