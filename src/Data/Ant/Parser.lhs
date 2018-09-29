@@ -1,85 +1,49 @@
 
+> {-# LANGUAGE MultiWayIf #-}
+
 > module Data.Ant.Parser (parseAnt) where
 
 > import Prelude hiding (error)
 > import Data.Ant.Ast
 > import Data.Ant.Error
+> import Data.Ant.Parser.Hsid
+> import Data.Ant.Parser.Symbol
+> import Data.Ant.Parser.Closed
 > import Language.Haskell.TH
 > import Language.Haskell.Meta
 > import Text.ParserCombinators.Parsec
 
 > parseAnt :: String -> Either String Ast
 > parseAnt source =
->   case parse ant "(unknown)" source of
+>   case parse ast "(unknown)" source of
 >     Left message -> Left $ show message
->     Right ast -> Right ast
+>     Right ast' -> Right ast'
 
-> ant :: Parser Ast
-> ant = pure MkAst
->    <*> nodes
+> ast :: Parser Ast
+> ast = pure MkAst <*> many (choice [escN, expN, strN])
 
-> nodes :: Parser [Node]
-> nodes = many node
-
-> node :: Parser Node
-> node = choice [esc, expN, strN]
-
-> esc :: Parser Node
-> esc =
->   do char '\\'
->      c <- oneOf "\\$"
+> escN :: Parser Node
+> escN =
+>   do escape
+>      c <- oneOf [escapeS, annexS]
 >      return $ StrN [c]
 
 > expN :: Parser Node
 > expN =
->   do string "$"
->      exp <- (try expNVar <|> expNExp)
+>   do annex
+>      exp <- choice [expNVar, expNExp]
 >      return $ ExpN exp
 
 > strN :: Parser Node
-> strN =
->   do str <- many1 strChar
->      return $ StrN str
->   where
->     strChar = noneOf "\\$"
+> strN = pure StrN <*> many1 (noneOf [escapeS, annexS])
 
 > expNVar :: Parser Exp
-> expNVar = choice [hsVar, hsCon]
->   where
->     hsVar = hsId VarE lower
->     hsCon = hsId ConE upper 
->     hsId node initial =
->       do x <- initial <|> char '_'
->          xs <- idBody
->          return $ node $ mkName (x:xs)
->     idBody = many $ choice
->       [ letter
->       , char '_'
->       , digit
->       , char '\''
->       ]
+> expNVar = choice [var, con]
 
 > expNExp :: Parser Exp
 > expNExp =
->   do char '{'
->      raw <- closed 0
->      case parseExp raw of
+>   do raw <- closed (openS, closeS) escapeS
+>      case parseExp (crux raw) of
 >        Left message -> error message
->        Right exp -> return exp      
->   where
->     closed :: Int -> Parser String
->     closed nesting =
->       do c <- anyChar
->          if c == '}' && nesting == 0 then
->            return []
->          else if c == '\\' then
->            do c' <- oneOf "\\{}" <?> "escape character"
->               cs <- closed nesting
->               return (c':cs)
->          else
->            do cs <- closed $
->                 case c of
->                   '{' -> nesting + 1
->                   '}' -> nesting - 1
->                   _ -> nesting
->               return (c:cs)
+>        Right exp -> return exp
+>   where crux = tail . init

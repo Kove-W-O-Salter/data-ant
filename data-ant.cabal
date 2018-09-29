@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 75f4d9d40997f91b1e64e4977bb6c4311e9fd633a5c419dfa326eabbbbdcf1f1
+-- hash: d9b7342d8e1717a89b0dd66ce40ad6bc42e3a7b4147142523a727fdaa1f7e87a
 
 name:           data-ant
 version:        0.1.0.1
@@ -32,6 +32,9 @@ library
       Data.Ant.Ast
       Data.Ant.Error
       Data.Ant.Parser
+      Data.Ant.Parser.Closed
+      Data.Ant.Parser.Hsid
+      Data.Ant.Parser.Symbol
       Data.Ant.Render
   other-modules:
       Paths_data_ant
