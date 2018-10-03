@@ -1,12 +1,8 @@
 
 > module Data.Ant.Error (error) where
 
-> import qualified Prelude as Prelude
+> import Prelude hiding (error)
 
-> error :: Prelude.String -> a
+> error :: Monad m => String -> m a
 > error message =
->   Prelude.error (Prelude.concat
->     [ "Ant: Error: "
->     , message
->     , "."
->     ])
+>   fail $ concat ["ant: ", message, "."]

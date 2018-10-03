@@ -5,7 +5,6 @@
 
 > import Prelude hiding (error)
 > import Data.Ant.Ast
-> import Data.Ant.Error
 > import Data.Ant.Parser.Hsid
 > import Data.Ant.Parser.Symbol
 > import Data.Ant.Parser.Closed
@@ -16,7 +15,7 @@
 > parseAnt :: String -> Either String Ast
 > parseAnt source =
 >   case parse ast "(unknown)" source of
->     Left message -> Left $ show message
+>     Left message -> Left "parse error"
 >     Right ast' -> Right ast'
 
 > ast :: Parser Ast
@@ -44,6 +43,6 @@
 > expNExp =
 >   do raw <- closed (openS, closeS) escapeS
 >      case parseExp (crux raw) of
->        Left message -> error message
+>        Left message -> fail message
 >        Right exp -> return exp
 >   where crux = tail . init

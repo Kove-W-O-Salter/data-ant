@@ -24,10 +24,4 @@
 >     , quoteDec = unusable "declaration"
 >     }
 >   where
->     unusable construct =
->       error $ concat
->         [ "An Ant may not be used as an '"
->         , construct
->         , "'."
->         ]
->
+>     unusable = error . ("an ant quoter cannot yield " ++)
