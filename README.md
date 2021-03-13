@@ -1,7 +1,7 @@
 # data-ant
 [![Build Status](https://travis-ci.com/Kove-W-O-Salter/data-ant.svg?branch=master)](https://travis-ci.com/Kove-W-O-Salter/data-ant)
 ## Description
-`data-ant` is a simple, yet powerful, library for `String` interpolation in `Haskell`.
+`data-ant` is a simple library for `String` interpolation in `Haskell`.
 
 ## Installation
 * **With stack**: add the following to the `extra-deps` section in your project's `stack.yaml`:
@@ -13,9 +13,9 @@
    Now add `data-ant` to any dependency sections in your `package.yaml`.
 * **With cabal**: run the following:
   ```bash
-  git clone https://github.com/Kove-W-O-Salter/data-ant && cd data-ant
-                                                        && cabal test
-                                                        && cabal install
+  git clone https://github.com/fprimeofx/data-ant && cd data-ant
+                                                  && cabal test
+                                                  && cabal install
   ```
 
 ## Example
